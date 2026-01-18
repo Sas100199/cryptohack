@@ -343,27 +343,29 @@ It hides your attention.
       }
 
        function triggerScare() {
-    const horrorVideos = [
-      "https://media.giphy.com/media/xT9IgvEOwRzUcZDRiU/giphy.mp4",
-      "https://media.giphy.com/media/3o7aD2saalBwwftBIY/giphy.mp4",
-      "https://media.giphy.com/media/l0MYC0LajbaPoEADu/giphy.mp4"
+    const horrorGifs = [
+      "https://media.giphy.com/media/xT9IgvEOwRzUcZDRiU/giphy.gif",
+      "https://media.giphy.com/media/3o7aD2saalBwwftBIY/giphy.gif",
+      "https://media.giphy.com/media/l0MYC0LajbaPoEADu/giphy.gif",
+      "https://media.giphy.com/media/26ufdipQqU2lhNA4g/giphy.gif",
+      "https://media.giphy.com/media/5xtDarIELDLO7lSFQJi/giphy.gif"
     ];
 
-    const randomVideo =
-      horrorVideos[Math.floor(Math.random() * horrorVideos.length)];
+    const randomGif =
+      horrorGifs[Math.floor(Math.random() * horrorGifs.length)];
 
     document.getElementById("scare-overlay").style.display = "block";
 
     document.getElementById("video").innerHTML = `
-      <video autoplay loop playsinline
-        style="width:100vw;height:100vh;object-fit:cover">
-        <source src="${randomVideo}" type="video/mp4">
-      </video>
+      <img src="${randomGif}"
+        style="
+          width:100vw;
+          height:100vh;
+          object-fit:cover;
+          filter: contrast(120%) saturate(120%);
+        "
+      />
     `;
-
-    const vid = document.querySelector("#video video");
-    vid.muted = false;
-    vid.volume = 1;
 
     document.documentElement.requestFullscreen?.();
   }
