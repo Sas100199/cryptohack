@@ -10,12 +10,6 @@
       rel="stylesheet"
     />
 
-    <!-- 
-INSPECT_LOG_01:
-The system does not hide the key.
-It hides your attention.
--->
-
     <style>
       :root {
         --blood-red: #880000;
@@ -34,8 +28,7 @@ It hides your attention.
         overflow: hidden;
       }
 
-      /* TARGET */
-      #user-tag {
+      #userTag {
         position: fixed;
         top: 20px;
         right: 120px;
@@ -44,8 +37,7 @@ It hides your attention.
         display: none;
       }
 
-      /* HINT BUTTON */
-      #hint-btn {
+      #hintBtn {
         position: fixed;
         top: 20px;
         right: 20px;
@@ -58,12 +50,11 @@ It hides your attention.
         display: none;
       }
 
-      #hint-btn:hover {
+      #hintBtn:hover {
         background: var(--blood-red);
         color: white;
       }
 
-      /* SCREENS */
       .screen {
         display: none;
         background: var(--dark);
@@ -74,7 +65,7 @@ It hides your attention.
         max-width: 800px;
       }
 
-      #main-menu {
+      #mainMenu {
         display: block;
       }
 
@@ -83,7 +74,6 @@ It hides your attention.
         color: var(--blood-red);
       }
 
-      /* INPUT (HAUNTED) */
       input {
         background: black;
         border: 1px solid var(--blood-red);
@@ -102,34 +92,18 @@ It hides your attention.
       }
 
       @keyframes haunt {
-        0%,
-        100% {
-          box-shadow: 0 0 8px rgba(255, 0, 0, 0.3);
-        }
-        50% {
-          box-shadow: 0 0 25px rgba(255, 0, 0, 0.8);
-        }
+        0%,100% { box-shadow: 0 0 8px rgba(255,0,0,.3); }
+        50% { box-shadow: 0 0 25px rgba(255,0,0,.8); }
       }
 
       @keyframes glitch {
-        0% {
-          transform: translate(0);
-        }
-        25% {
-          transform: translate(-2px, 2px);
-        }
-        50% {
-          transform: translate(2px, -2px);
-        }
-        75% {
-          transform: translate(-1px, 1px);
-        }
-        100% {
-          transform: translate(0);
-        }
+        0% { transform: translate(0); }
+        25% { transform: translate(-2px,2px); }
+        50% { transform: translate(2px,-2px); }
+        75% { transform: translate(-1px,1px); }
+        100% { transform: translate(0); }
       }
 
-      /* BUTTONS */
       .btn {
         margin: 10px;
         padding: 12px 30px;
@@ -145,8 +119,7 @@ It hides your attention.
         background: var(--blood-red);
       }
 
-      /* BOX GAME */
-      .box-container {
+      .boxContainer {
         display: flex;
         gap: 20px;
         justify-content: center;
@@ -165,16 +138,11 @@ It hides your attention.
       }
 
       @keyframes drift {
-        from {
-          transform: translateX(0);
-        }
-        to {
-          transform: translateX(10px);
-        }
+        from { transform: translateX(0); }
+        to { transform: translateX(10px); }
       }
 
-      /* SCARE */
-      #scare-overlay {
+      #scareOverlay {
         position: fixed;
         inset: 0;
         background: black;
@@ -185,190 +153,135 @@ It hides your attention.
   </head>
 
   <body>
-    <audio id="bg" loop>
-      <source src="https://www.soundjay.com/nature/sounds/wind-howl-01.mp3" />
-    </audio>
+    <audio id="bg" loop src="https://www.soundjay.com/nature/sounds/wind-howl-01.mp3"></audio>
+    <audio id="whisper" src="https://www.soundjay.com/human/whisper-01.mp3"></audio>
 
-    <audio
-      id="whisper"
-      src="https://www.soundjay.com/human/whisper-01.mp3"
-    ></audio>
+    <div id="userTag">TARGET: <span id="targetName"></span></div>
+    <button id="hintBtn" onclick="giveHint()">HINT</button>
 
-    <div id="user-tag">TARGET: <span id="target-name"></span></div>
-    <button id="hint-btn" onclick="giveHint()">HINT</button>
-
-    <!-- MAIN -->
-    <div id="main-menu" class="screen">
+    <div id="mainMenu" class="screen">
       <h1>THE_VOID</h1>
       <p>Type your name.</p>
-      <input id="name-input" placeholder="SUBJECT_NAME" />
+      <input id="nameInput" placeholder="SUBJECT_NAME" />
       <br />
       <button class="btn" onclick="initHub()">ENTER</button>
     </div>
 
-    <!-- HUB -->
     <div id="hub" class="screen">
       <h1>SELECT_TRIAL</h1>
       <button class="btn" onclick="showGame('hack')">HACKER_PROTOCOL</button>
       <button class="btn" onclick="showGame('box')">BLIND_CHOICE</button>
     </div>
 
-    <!-- HACK -->
     <div id="hack" class="screen">
       <h1>HACKER_PROTOCOL</h1>
-      <input id="hack-input" placeholder="key_xxxx" />
+      <input id="hackInput" placeholder="key_xxxx" />
       <button class="btn" onclick="checkHack()">DECRYPT</button>
-      <p>ATTEMPTS: <span id="hack-attempts"></span></p>
+      <p>ATTEMPTS: <span id="hackAttempts"></span></p>
+    </div>
 
-      <!--
-    INSPECT_LOG_02:
-    Strings rot when exposed to light.
-    --></div>
-
-    <!-- BOX -->
     <div id="box" class="screen">
       <h1>BLIND_CHOICE</h1>
-      <div class="box-container">
+      <div class="boxContainer">
         <div class="box" onclick="checkBox()">?</div>
         <div class="box" onclick="checkBox()">?</div>
         <div class="box" onclick="checkBox()">?</div>
       </div>
     </div>
 
-    <div id="scare-overlay">
-      <div id="video"></div>
-    </div>
+    <div id="scareOverlay"><div id="videoContainer"></div></div>
 
     <script>
-      console.log("%cINSPECT_LOG_03", "color:red;font-size:14px");
+      console.log("%cINSPECT_LOG_03","color:red");
       console.log("The key is already on this page.");
       console.log("Lowercase matters.");
 
-      // Obfuscated hint
-      const _k = atob("a2V5X3NoYWRv");
-
-      // GAME STATE
-      let key = _k + Math.random().toString(36).slice(2, 4);
+      const _k = atob("a2V5X3NoYWRvdw=="); // key_shadow
+      let key = _k + Math.random().toString(36).slice(2,4);
       let attempts = 2;
       let chance = 0.3;
       let hintUses = 0;
 
-      // HAUNTED INPUT
-      document.getElementById("name-input").addEventListener("input", (e) => {
+      document.getElementById("nameInput").addEventListener("input", e => {
         if (Math.random() < 0.15) {
-          e.target.value = e.target.value.replace(/./g, (c) =>
-            Math.random() < 0.2 ? "#" : c,
+          e.target.value = e.target.value.replace(/./g, c =>
+            Math.random() < 0.2 ? "#" : c
           );
         }
       });
 
-      // WHISPERS
       document.addEventListener("keydown", () => {
         if (Math.random() < 0.05) {
-          document.getElementById("whisper").play();
+          document.getElementById("whisper").play().catch(()=>{});
         }
       });
 
-      function show(id) {
-        document
-          .querySelectorAll(".screen")
-          .forEach((s) => (s.style.display = "none"));
-        document.getElementById(id).style.display = "block";
+      function show(screenId){
+        document.querySelectorAll(".screen").forEach(s=>s.style.display="none");
+        document.getElementById(screenId).style.display="block";
       }
 
-      function initHub() {
-        const n = document.getElementById("name-input").value;
-        if (!n) return;
+      function initHub(){
+        const n = document.getElementById("nameInput").value.trim();
+        if(!n) return;
 
-        document.getElementById("bg").play();
-        document.getElementById("target-name").innerText = n.toUpperCase();
-        document.getElementById("user-tag").style.display = "block";
-        document.getElementById("hint-btn").style.display = "block";
+        document.getElementById("bg").play().catch(()=>{});
+        document.getElementById("targetName").innerText = n.toUpperCase();
+        document.getElementById("userTag").style.display = "block";
+        document.getElementById("hintBtn").style.display = "block";
         show("hub");
       }
 
-      function showGame(g) {
-        if (g === "hack") {
-          document.getElementById("hack-attempts").innerText = attempts;
-          show("hack");
-        } else show("box");
+      function showGame(game){
+        if(game==="hack"){
+          document.getElementById("hackAttempts").innerText = attempts;
+        }
+        show(game);
       }
 
-      function giveHint() {
+      function giveHint(){
         hintUses++;
-
-        if (hintUses > 2) {
-          chance -= 0.1;
-          attempts--;
+        if(hintUses>2){
+          chance = Math.max(0.05, chance-0.1);
+          attempts = Math.max(0, attempts-1);
         }
 
-        const lies = [
-          "The key is longer.",
-          "Ignore inspect.",
-          "Uppercase matters.",
-          "You already failed.",
-        ];
+        const truths=["Inspect the source.","Console whispers.","Base64 hides sins."];
+        const lies=["Uppercase matters.","Ignore inspect.","The key is longer."];
 
-        const truths = [
-          "Inspect the source.",
-          "Console whispers.",
-          "Base64 hides sins.",
-        ];
-
-        alert(
-          Math.random() < 0.5
-            ? lies[Math.floor(Math.random() * lies.length)]
-            : truths[Math.floor(Math.random() * truths.length)],
+        alert(Math.random()<0.5
+          ? truths[Math.floor(Math.random()*truths.length)]
+          : lies[Math.floor(Math.random()*lies.length)]
         );
       }
 
-      function checkHack() {
-        const v = document.getElementById("hack-input").value.trim();
+      function checkHack(){
+        if(attempts<=0) return triggerScare();
         attempts--;
-        document.getElementById("hack-attempts").innerText = attempts;
+        document.getElementById("hackAttempts").innerText = attempts;
 
-        if (v === key) {
-          triggerScare(); // winning is punished
-          return;
-        }
-
-        if (attempts <= 0) triggerScare();
+        if(document.getElementById("hackInput").value.trim()===key) triggerScare();
+        else if(attempts<=0) triggerScare();
       }
 
-      function checkBox() {
-        if (Math.random() < chance) {
-          chance -= 0.15;
+      function checkBox(){
+        if(Math.random()<chance){
+          chance-=0.15;
           show("hub");
         } else triggerScare();
       }
 
-       function triggerScare() {
-    const horrorGifs = [
-      "https://media.giphy.com/media/xT9IgvEOwRzUcZDRiU/giphy.gif",
-      "https://media.giphy.com/media/3o7aD2saalBwwftBIY/giphy.gif",
-      "https://media.giphy.com/media/l0MYC0LajbaPoEADu/giphy.gif",
-      "https://media.giphy.com/media/26ufdipQqU2lhNA4g/giphy.gif",
-      "https://media.giphy.com/media/5xtDarIELDLO7lSFQJi/giphy.gif"
-    ];
+      function triggerScare(){
+        const gifs=[
+          "https://media.giphy.com/media/xT9IgvEOwRzUcZDRiU/giphy.gif",
+          "https://media.giphy.com/media/4dSvfQuyarxTy/giphy.gif"
+        ];
 
-    const randomGif =
-      horrorGifs[Math.floor(Math.random() * horrorGifs.length)];
+        document.getElementById("scareOverlay").style.display="block";
+        document.getElementById("videoContainer").innerHTML = `<img src="${gifs[Math.floor(Math.random()*gifs.length)]}" style="width:100vw;height:100vh;object-fit:cover">`;
 
-    document.getElementById("scare-overlay").style.display = "block";
-
-    document.getElementById("video").innerHTML = `
-      <img src="${randomGif}"
-        style="
-          width:100vw;
-          height:100vh;
-          object-fit:cover;
-          filter: contrast(120%) saturate(120%);
-        "
-      />
-    `;
-
-    document.documentElement.requestFullscreen?.();
-  }
+        try{ document.documentElement.requestFullscreen(); }catch{}
+      }
     </script>
   </body>
 </html>
