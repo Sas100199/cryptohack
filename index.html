@@ -342,17 +342,31 @@ It hides your attention.
         } else triggerScare();
       }
 
-      function triggerScare() {
-        document.getElementById("scare-overlay").style.display = "block";
-        document.getElementById("video").innerHTML = `
-        <video autoplay muted loop playsinline
+       function triggerScare() {
+    const horrorVideos = [
+      "https://media.giphy.com/media/xT9IgvEOwRzUcZDRiU/giphy.mp4",
+      "https://media.giphy.com/media/3o7aD2saalBwwftBIY/giphy.mp4",
+      "https://media.giphy.com/media/l0MYC0LajbaPoEADu/giphy.mp4"
+    ];
+
+    const randomVideo =
+      horrorVideos[Math.floor(Math.random() * horrorVideos.length)];
+
+    document.getElementById("scare-overlay").style.display = "block";
+
+    document.getElementById("video").innerHTML = `
+      <video autoplay loop playsinline
         style="width:100vw;height:100vh;object-fit:cover">
-        <source src="https://media.giphy.com/media/xT9IgvEOwRzUcZDRiU/giphy.mp4">
-        </video>
+        <source src="${randomVideo}" type="video/mp4">
+      </video>
     `;
-        document.querySelector("video").muted = false;
-        document.documentElement.requestFullscreen?.();
-      }
+
+    const vid = document.querySelector("#video video");
+    vid.muted = false;
+    vid.volume = 1;
+
+    document.documentElement.requestFullscreen?.();
+  }
     </script>
   </body>
 </html>
